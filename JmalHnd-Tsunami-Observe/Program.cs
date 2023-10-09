@@ -1,8 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System.Drawing;
-using System.Resources;
-using System.Xml;
-using static System.Collections.Specialized.BitVector32;
+﻿using System.Xml;
 
 namespace JmalHnd_Tsunami_Observe
 {
@@ -29,6 +25,8 @@ namespace JmalHnd_Tsunami_Observe
                     {
                         if (node.SelectSingleNode("atom:title", nsmgr).InnerText == "津波情報a")
                         {
+                            if (!node.SelectSingleNode("atom:content", nsmgr).InnerText.Contains("【津波観測に関する情報】"))
+                                continue;
                             string URL2 = node.SelectSingleNode("atom:id", nsmgr).InnerText;
                             Console.WriteLine($"見つかりました。取得中…({URL2})");
                             xml.Load(URL2);
@@ -36,13 +34,13 @@ namespace JmalHnd_Tsunami_Observe
                             goto view;
                         }
                     }
-                        Console.WriteLine("見つかりませんでした。描画はしません。");
-                        Console.WriteLine($"処理が完了しました。({DateTime.Now:HH:mm:ss.ff})");
-                        return;
+                    Console.WriteLine("見つかりませんでした。描画はしません。");
+                    Console.WriteLine($"処理が完了しました。({DateTime.Now:HH:mm:ss.ff})");
+                    return;
                 }
-                //未発表再現用
-                //Exist = false;
-                view:
+            //未発表再現用
+            //Exist = false;
+            view:
                 if (Exist)
                 {//
                     nsmgr.AddNamespace("jmx", "http://xml.kishou.go.jp/jmaxml1/");
@@ -66,7 +64,7 @@ namespace JmalHnd_Tsunami_Observe
                         Console.WriteLine($"  {infos.SelectSingleNode("jmx_se:Station/jmx_se:MaxHeight/jmx_eb:TsunamiHeight", nsmgr).InnerText}m");
                     }
                 }
-                
+
                 //throw new Exception("デバック用");
                 Console.WriteLine($"\n\n\n\n処理が完了しました。({DateTime.Now:HH:mm:ss.ff})");
                 Console.ReadKey();

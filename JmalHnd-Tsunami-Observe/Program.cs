@@ -48,7 +48,7 @@ namespace JmalHnd_Tsunami_Observe
                     nsmgr.AddNamespace("jmx_se", "http://xml.kishou.go.jp/jmaxml1/body/seismology1/");
                     nsmgr.AddNamespace("jmx_eb", "http://xml.kishou.go.jp/jmaxml1/elementBasis1/");
                     //{xml.SelectSingleNode("", nsmgr).InnerText}
-                    Console.WriteLine($"\n\n\n\n/////津波観測に関する情報/////");
+                    Console.WriteLine($"\n\n/////津波観測に関する情報/////");
 
 
                     Console.Write($"{DateTime.Parse(xml.SelectSingleNode("jmx:Report/jmx_ib:Head/jmx_ib:ReportDateTime", nsmgr).InnerText):HH:mm}発表");
@@ -66,7 +66,7 @@ namespace JmalHnd_Tsunami_Observe
                 }
 
                 //throw new Exception("デバック用");
-                Console.WriteLine($"\n\n\n\n処理が完了しました。({DateTime.Now:HH:mm:ss.ff})");
+                Console.WriteLine($"\n\n処理が完了しました。({DateTime.Now:HH:mm:ss.ff})");
                 Console.ReadKey();
             }
             catch (Exception ex)

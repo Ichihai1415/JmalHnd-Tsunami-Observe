@@ -61,7 +61,10 @@ namespace JmalHnd_Tsunami_Observe
                         Console.Write($"  {infos.SelectSingleNode("jmx_se:Station/jmx_se:Name", nsmgr).InnerText}");
                         Console.Write($"    {infos.SelectSingleNode("jmx_se:Station/jmx_se:FirstHeight/jmx_se:Condition", nsmgr).InnerText}");
                         Console.Write($"    {DateTime.Parse(infos.SelectSingleNode("jmx_se:Station/jmx_se:MaxHeight/jmx_se:DateTime", nsmgr).InnerText):HH:mm}");
-                        Console.WriteLine($"  {infos.SelectSingleNode("jmx_se:Station/jmx_se:MaxHeight/jmx_eb:TsunamiHeight", nsmgr).InnerText}m");
+                        if (infos.SelectSingleNode("jmx_se:Station/jmx_se:MaxHeight/jmx_eb:TsunamiHeight", nsmgr) == null)
+                            Console.WriteLine($"  {infos.SelectSingleNode("jmx_se:Station/jmx_se:MaxHeight/jmx_se:Condition", nsmgr).InnerText}");//微弱?
+                        else
+                            Console.WriteLine($"  {infos.SelectSingleNode("jmx_se:Station/jmx_se:MaxHeight/jmx_eb:TsunamiHeight", nsmgr).InnerText}m");
                     }
                 }
 
@@ -71,9 +74,10 @@ namespace JmalHnd_Tsunami_Observe
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"//////////////////////////////////////////////////\nエラーが発生しました。わからない場合開発者に報告してください。このスクリーンショットがあると助かります。" +
+                Console.WriteLine($"\n//////////////////////////////////////////////////\nエラーが発生しました。わからない場合開発者に報告してください。このスクリーンショットがあると助かります。" +
                     $"\n<エラーの例>\nオブジェクト参照がオブジェクト インスタンスに設定されていません。/値をnullにすることはできません:処理ミスです。" +
                     $"\n//////////////////////////////////////////////////\n内容:{ex}");
+                Console.ReadKey();
             }
 
         }

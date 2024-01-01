@@ -83,13 +83,13 @@ namespace JmalHnd_Tsunami_Observe
                         foreach (XmlNode info in infos.SelectNodes("jmx_se:Station", nsmgr))
                         {
                             Console.Write($"{area}");
-                            Console.Write($" {info.SelectSingleNode("jmx_se:Name", nsmgr).InnerText}");
-                            Console.Write($"  {info.SelectSingleNode("jmx_se:FirstHeight/jmx_se:Condition", nsmgr).InnerText}");
-                            Console.Write($"  {DateTime.Parse(info.SelectSingleNode("jmx_se:MaxHeight/jmx_se:DateTime", nsmgr).InnerText):HH:mm}");
+                            Console.Write($" {info.SelectSingleNode("jmx_se:Name", nsmgr)?.InnerText}");
+                            Console.Write($"  {info.SelectSingleNode("jmx_se:FirstHeight/jmx_se:Initial", nsmgr)?.InnerText ?? info.SelectSingleNode("jmx_se:FirstHeight/jmx_se:Condition", nsmgr)?.InnerText}");//押し引きまたは判別不能
+                            Console.Write($"  {DateTime.Parse(info.SelectSingleNode("jmx_se:MaxHeight/jmx_se:DateTime", nsmgr)?.InnerText ?? "0"):HH:mm}");
                             if (info.SelectSingleNode("jmx_se:MaxHeight/jmx_eb:TsunamiHeight", nsmgr) == null)
-                                Console.WriteLine($" {info.SelectSingleNode("jmx_se:MaxHeight/jmx_se:Condition", nsmgr).InnerText}");//微弱? 観測中はどうなる？
+                                Console.WriteLine($" {info.SelectSingleNode("jmx_se:MaxHeight/jmx_se:Condition", nsmgr)?.InnerText}");//微弱? 観測中はどうなる？
                             else
-                                Console.WriteLine($" {info.SelectSingleNode("jmx_se:MaxHeight/jmx_eb:TsunamiHeight", nsmgr).InnerText}m");
+                                Console.WriteLine($" {info.SelectSingleNode("jmx_se:MaxHeight/jmx_eb:TsunamiHeight", nsmgr)?.InnerText}m");
                         }
                     }
 

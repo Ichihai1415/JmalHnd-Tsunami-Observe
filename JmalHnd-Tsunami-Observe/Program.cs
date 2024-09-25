@@ -21,7 +21,7 @@ namespace JmalHnd_Tsunami_Observe
             try//todo:保存、指定報数表示、マップ
             {
             restart:
-                var uri = args.Length == 1 ? args[0].Replace("\"","") : "https://www.data.jma.go.jp/developer/xml/feed/eqvol.xml";
+                var uri = args.Length == 1 ? args[0].Replace("\"", "") : "https://www.data.jma.go.jp/developer/xml/feed/eqvol.xml";
                 var xml = new XmlDocument();
                 var nsmgr = new XmlNamespaceManager(xml.NameTable);
                 var exist = true;
@@ -99,9 +99,9 @@ namespace JmalHnd_Tsunami_Observe
                     for (int view = 1; view <= 2; view++)
                     {
                         if (view == 1)
-                            Console.WriteLine("\n[追加/更新]");
+                            ConsoleWrite("\n[追加/更新]", ConsoleColor.White, true);
                         else
-                            Console.WriteLine("\n[すべて]");
+                            ConsoleWrite("\n[すべて]", ConsoleColor.White, true);
 
 
                         ConsoleWrite("エリア名　　　　　　　　　観測点名                更新時刻      高さ     付加事項       |  第一波の時刻 初動 付加事項", ConsoleColor.White, true);
@@ -131,7 +131,7 @@ namespace JmalHnd_Tsunami_Observe
 
                                 var maxTimeSt = info.SelectSingleNode("jmx_se:MaxHeight/jmx_se:DateTime", nsmgr)?.InnerText;
                                 if (maxTimeSt != null)
-                                    Console.Write(DateTime.Parse(maxTimeSt).ToString("MM/dd HH:mm"));
+                                    ConsoleWrite(DateTime.Parse(maxTimeSt).ToString("MM/dd HH:mm"));
                                 else
                                     ConsoleWrite("--/-- --:--", ConsoleColor.DarkGray);
 
@@ -242,7 +242,7 @@ namespace JmalHnd_Tsunami_Observe
                     }
                 }
                 //throw new Exception("デバック用");
-                Console.WriteLine($"\n\n処理が完了しました。({DateTime.Now:HH:mm:ss.ff})\n\n何かキーを押すと再取得します。");
+                ConsoleWrite($"\n\n処理が完了しました。({DateTime.Now:HH:mm:ss.ff})\n\n何かキーを押すと再取得します。", true);
                 Console.ReadKey();
                 goto restart;
             }

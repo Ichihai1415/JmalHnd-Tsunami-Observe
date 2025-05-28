@@ -4,8 +4,12 @@ namespace JmalHnd_Tsunami_Observe
 {
     internal class Program
     {
-        public readonly static ConsoleColor defaultColor = Console.ForegroundColor;
-        public readonly static bool debug = false;//ファイル読み込みデバッグ
+        public static readonly ConsoleColor defaultColor = Console.ForegroundColor;
+#if TEST//ファイル読み込みデバッグ
+        public static readonly bool debug = true;//ファイル読み込むときTest構成にすること
+#else
+        public static readonly bool debug = false;//通常false
+#endif
 
         static void Main(string[] args)//気象庁防災情報XMLフォーマット技術情報 - 地震火山関連解説資料　https://dmdata.jp/docs/jma/manual/0101-0185.pdf#page=73
         {
@@ -64,14 +68,18 @@ namespace JmalHnd_Tsunami_Observe
                     if (xml == null)
                         throw new Exception("xmlの取得に失敗しています。データがありません。");
 
-                    if (debug)//""
-                              //xml.Load("C:\\Users\\proje\\Downloads\\20240924020401_0_VTSE51_270000-edit.xml");
-                              //xml.Load("C:\\Users\\proje\\Downloads\\20240102010301_0_VTSE51_010000.xml");
-                              //xml.Load("D:\\Ichihai1415\\data\\jma\\jmaxml_20240821_Samples\\32-39_12_12_191025_VTSE51.xml");
-                              //xml.Load("D:\\Ichihai1415\\data\\jma\\jmaxml_20240821_Samples\\32-39_12_14_191025_VTSE51.xml");
-                              //xml.Load("D:\\Ichihai1415\\data\\jma\\jmaxml_20240821_Samples\\32-39_11_08_120615_VTSE51.xml");//新規/更新なし
-                              //xml.Load("D:\\Ichihai1415\\data\\jma\\jmaxml_20240821_Samples\\38-39_03_03_210805_VTSE51.xml");//取り消し(ヘッダは通常)
-                        Console.Write("");//if (debug)で↓のを入れないように
+                    if (debug)
+                    {
+                        //xml.Load("C:\\Users\\proje\\Downloads\\20240924020401_0_VTSE51_270000-edit.xml");
+                        //xml.Load("C:\\Users\\proje\\Downloads\\20240102010301_0_VTSE51_010000.xml");
+                        //xml.Load("D:\\Ichihai1415\\data\\jma\\jmaxml_20240821_Samples\\32-39_12_12_191025_VTSE51.xml");
+                        //xml.Load("D:\\Ichihai1415\\data\\jma\\jmaxml_20240821_Samples\\32-39_12_14_191025_VTSE51.xml");
+                        //xml.Load("D:\\Ichihai1415\\data\\jma\\jmaxml_20240821_Samples\\32-39_11_08_120615_VTSE51.xml");//新規/更新なし
+                        //xml.Load("D:\\Ichihai1415\\data\\jma\\jmaxml_20240821_Samples\\38-39_03_03_210805_VTSE51.xml");//取り消し(ヘッダは通常)
+                        //以上のサンプル電文はローカルで削除済み
+                        //xml.Load("D:\\Ichihai1415\\data\\jma\\xml\\jmaxml_20250318_Samples\\32-39_12_12_250206_VTSE51.xml");
+                        xml.Load(@"D:\Ichihai1415\data\jma\xml\jmaxml_20250318_Samples\38_40_01_240613_VTSE51.xml");
+                    }
 
                     nsmgr = new XmlNamespaceManager(xml.NameTable);
                     nsmgr.AddNamespace("jmx", "http://xml.kishou.go.jp/jmaxml1/");

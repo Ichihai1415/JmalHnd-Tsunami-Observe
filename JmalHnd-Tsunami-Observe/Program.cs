@@ -14,9 +14,9 @@ namespace JmalHnd_Tsunami_Observe
         static void Main(string[] args)//気象庁防災情報XMLフォーマット技術情報 - 地震火山関連解説資料　https://dmdata.jp/docs/jma/manual/0101-0185.pdf#page=73
         {
             Console.WriteLine(new string('/', 120));
-            Console.WriteLine("JmalHnd-Tsunami-Observe v1.0.6    Ichihai1415\n" +
+            Console.WriteLine("JmalHnd-Tsunami-Observe v1.0.7    Ichihai1415\n" +
                 "このソフトはWindows11の標準のコマンドプロンプトでの表示用に作られています。\n" +
-                "それ以外の場合や上下の/が改行されている場合は表示が正しくされない場合があります。\n" +
+                "それ以外の場合や上下の/が改行されている場合は表示が正しくされないまたはエラーが出る可能性があります。サイズ変更、ズームアウトなどで対応してください。\n" +
                 "またこのソフトは臨時のものです。README.mdを確認してください。");
             Console.WriteLine(new string('/', 120));
 
@@ -43,9 +43,12 @@ namespace JmalHnd_Tsunami_Observe
                     Console.WriteLine("feedから津波情報を検索中…");
                     foreach (XmlNode node in xml.SelectNodes("atom:feed/atom:entry", nsmgr)!)
                     {
-                        if (node.SelectSingleNode("atom:title", nsmgr)?.InnerText == "津波情報a")
+                        if ((!File.Exists("_ignore-VTSE51") && node.SelectSingleNode("atom:title", nsmgr)?.InnerText == "津波情報a") ||
+                            (!File.Exists("_ignore-VTSE52") && node.SelectSingleNode("atom:title", nsmgr)?.InnerText == "沖合の津波観測に関する情報"))
                         {
-                            if (!node.SelectSingleNode("atom:content", nsmgr)!.InnerText.Contains("【津波観測に関する情報】"))
+
+                            //_ignore-VTSE51
+                            if (!node.SelectSingleNode("atom:content", nsmgr)!.InnerText.Contains("津波観測に関する情報"))
                                 continue;
                             var uri2 = node.SelectSingleNode("atom:id", nsmgr)!.InnerText;
                             Console.WriteLine($"見つかりました。取得中…({uri2})");
@@ -87,7 +90,7 @@ namespace JmalHnd_Tsunami_Observe
                     nsmgr.AddNamespace("jmx_se", "http://xml.kishou.go.jp/jmaxml1/body/seismology1/");
                     nsmgr.AddNamespace("jmx_eb", "http://xml.kishou.go.jp/jmaxml1/elementBasis1/");
                     //{xml.SelectSingleNode("", nsmgr).InnerText}
-                    Console.WriteLine($"\n\n【津波観測に関する情報】");
+                    Console.WriteLine($"\n\n【{xml.SelectSingleNode("/jmx:Report/jmx_ib:Head/jmx_ib:Title", nsmgr)!.InnerText}】");
 
 
 
